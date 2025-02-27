@@ -1,4 +1,4 @@
-package sb.rabbitmqlogconsumer.config.queue;
+package sb.rabbitmqlogconsumer.config.settings;
 
 import lombok.Getter;
 import lombok.Setter;

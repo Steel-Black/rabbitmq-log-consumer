@@ -7,9 +7,9 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import sb.rabbitmqlogconsumer.config.queue.extention.DlqLogSettings;
-import sb.rabbitmqlogconsumer.config.queue.extention.LogQueueSetting;
-import sb.rabbitmqlogconsumer.config.queue.extention.RetryLogQueueSettings;
+import sb.rabbitmqlogconsumer.config.settings.extention.DlqLogSettings;
+import sb.rabbitmqlogconsumer.config.settings.extention.LogQueueSetting;
+import sb.rabbitmqlogconsumer.config.settings.extention.RetryLogQueueSettings;
 
 @Configuration
 public class RabbitMQConfig {

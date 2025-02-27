@@ -1,12 +1,19 @@
 package sb.rabbitmqlogconsumer.dto;
 
-import java.sql.Timestamp;
-import java.util.Collection;
+import lombok.Builder;
+import lombok.Getter;
 
+import java.sql.Timestamp;
+
+import java.util.List;
+
+@Getter
+@Builder
 public class LogRecordEvent {
     private String table;
-    private Collection<LogRecord> records;
-    record LogRecord(String message, String step, String logger, String host, String correlationId, String level,
+    private List<LogRecord> records;
+
+    public record LogRecord(String message, String step, String logger, String host, String correlationId, String level, String method,
                             Timestamp timestamp){
     }
 }
