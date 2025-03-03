@@ -1,10 +1,14 @@
 package sb.rabbitmqlogconsumer.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.DirectRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import sb.rabbitmqlogconsumer.config.settings.extention.DlqLogSettings;
@@ -14,30 +18,30 @@ import sb.rabbitmqlogconsumer.config.settings.extention.RetryLogQueueSettings;
 @Configuration
 public class RabbitMQConfig {
 
-//    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter messageConverter, ErrorHandler errorHandler) {
-//        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-//        factory.setConnectionFactory(connectionFactory);
-//        factory.setMessageConverter(messageConverter);
+    public SimpleRabbitListenerContainerFactory simpleRabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(messageConverter);
 //        factory.setErrorHandler(errorHandler); // Подключаем кастомный обработчик ошибок
-//        return factory;
-//    }
-//
-//    public DirectRabbitListenerContainerFactory directRabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter messageConverter, ErrorHandler errorHandler) {
-//        DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
-//        factory.setConnectionFactory(connectionFactory);
-//        factory.setMessageConverter(messageConverter);
+        return factory;
+    }
+
+    public DirectRabbitListenerContainerFactory directRabbitListenerContainerFactory(ConnectionFactory connectionFactory, MessageConverter messageConverter) {
+        DirectRabbitListenerContainerFactory factory = new DirectRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(messageConverter);
 //        factory.setErrorHandler(errorHandler); // Подключаем кастомный обработчик ошибок
-//        return factory;
-//    }
-//
-//    @Bean
-//    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory, @Value("${spring.rabbitmq.listener.type}") String listenerType, MessageConverter messageConverter, ErrorHandler errorHandler) {
-//        if (listenerType.equalsIgnoreCase("Direct")) {
-//            return directRabbitListenerContainerFactory(connectionFactory, messageConverter, errorHandler);
-//        } else {
-//            return simpleRabbitListenerContainerFactory(connectionFactory, messageConverter, errorHandler);
-//        }
-//    }
+        return factory;
+    }
+
+    @Bean
+    public RabbitListenerContainerFactory<?> rabbitListenerContainerFactory(ConnectionFactory connectionFactory, @Value("${spring.rabbitmq.listener.type}") String listenerType, MessageConverter messageConverter) {
+        if (listenerType.equalsIgnoreCase("Direct")) {
+            return directRabbitListenerContainerFactory(connectionFactory, messageConverter);
+        } else {
+            return simpleRabbitListenerContainerFactory(connectionFactory, messageConverter);
+        }
+    }
 
     @Bean
     public MessageConverter jsonMessageConverter() {
@@ -93,4 +97,5 @@ public class RabbitMQConfig {
     public Binding bindingDLQLog(Queue dlq, FanoutExchange dlqExchange) {
         return BindingBuilder.bind(dlq).to(dlqExchange);
     }
+
 }

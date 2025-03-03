@@ -1,20 +1,17 @@
-package sb.rabbitmqlogconsumer.dao;
+package sb.rabbitmqlogconsumer.repositories;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.stereotype.Repository;
 import sb.rabbitmqlogconsumer.dto.LogRecordEvent;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 @Repository
 @RequiredArgsConstructor
-public class LogEventDao implements Dao<LogRecordEvent> {
+public class LogEventEventRepository implements EventRepository<LogRecordEvent> {
     private final JdbcTemplate jdbcTemplate;
 
     @Override

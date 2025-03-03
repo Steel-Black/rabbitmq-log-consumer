@@ -43,3 +43,10 @@ spring:
       dlq-log:
         name: dlq-log
         exchange: dlq-log-exchange
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 529220GT
+    driver-class-name: org.postgresql.Driver
+  main:
+    lazy-initialization: false

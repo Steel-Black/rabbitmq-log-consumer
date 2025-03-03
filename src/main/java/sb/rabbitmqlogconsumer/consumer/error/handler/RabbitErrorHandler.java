@@ -11,8 +11,6 @@ import sb.rabbitmqlogconsumer.config.settings.extention.DlqLogSettings;
 import sb.rabbitmqlogconsumer.config.settings.extention.LogQueueSetting;
 import sb.rabbitmqlogconsumer.config.settings.extention.RetryLogQueueSettings;
 
-import java.util.Arrays;
-
 @Component
 @RequiredArgsConstructor
 public class RabbitErrorHandler implements RabbitListenerErrorHandler {

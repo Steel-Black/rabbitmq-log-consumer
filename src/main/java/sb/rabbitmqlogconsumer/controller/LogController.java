@@ -1,16 +1,15 @@
 package sb.rabbitmqlogconsumer.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sb.rabbitmqlogconsumer.produser.MessageProducer;
 
 @RestController
 @RequestMapping("/log")
-
+@RequiredArgsConstructor
 public class LogController {
-    @Autowired
-    private  MessageProducer messageProducer;
+    private final MessageProducer messageProducer;
     @GetMapping("")
     public ResponseEntity<String> getLog() {
         return ResponseEntity.ok("");
