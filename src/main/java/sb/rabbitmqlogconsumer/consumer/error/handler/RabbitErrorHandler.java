@@ -6,10 +6,14 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.api.RabbitListenerErrorHandler;
 import org.springframework.amqp.rabbit.support.ListenerExecutionFailedException;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
 import org.springframework.stereotype.Component;
 import sb.rabbitmqlogconsumer.config.settings.extention.DlqLogSettings;
 import sb.rabbitmqlogconsumer.config.settings.extention.LogQueueSetting;
 import sb.rabbitmqlogconsumer.config.settings.extention.RetryLogQueueSettings;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -24,6 +28,13 @@ public class RabbitErrorHandler implements RabbitListenerErrorHandler {
     public Object handleError(Message message, Channel channel, org.springframework.messaging.Message<?> message1, ListenerExecutionFailedException e) {
         System.err.println("Exception: " + e.getCause().getMessage());
         // Проверяем тип ошибки
+        Throwable cause = e.getCause();
+        if (cause instanceof MethodArgumentNotValidException ex){
+            Map<String, String> errors = new HashMap<>();
+            ex.getBindingResult().getFieldErrors().forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage()));
+            System.out.println("errors " + errors);
+        }
         if (e.getCause() instanceof IllegalArgumentException) {
             // Ошибка валидации → отправляем в DLQ
             System.out.println("Sending message to DLQ...");
@@ -33,7 +44,7 @@ public class RabbitErrorHandler implements RabbitListenerErrorHandler {
             rabbitTemplate.send(retryLogQueueSettings.getExchange(), "", message);
         } else {
             System.out.println("Retrying message processing...");
-            throw e;
+//            throw e;
         }
         return null;
     }

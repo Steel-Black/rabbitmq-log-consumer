@@ -1,8 +1,10 @@
 package sb.rabbitmqlogconsumer.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sb.rabbitmqlogconsumer.dto.LogRecordEvent;
 import sb.rabbitmqlogconsumer.produser.MessageProducer;
 
 @RestController
@@ -15,8 +17,12 @@ public class LogController {
         return ResponseEntity.ok("");
     }
     @PostMapping("")
-    public ResponseEntity<String> sendLog(@RequestBody String message) {
-        messageProducer.send(message);
+    public ResponseEntity<String> sendLog(@RequestBody LogRecordEvent message) {
+        try {
+            messageProducer.send(message);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok("");
     }
 }
