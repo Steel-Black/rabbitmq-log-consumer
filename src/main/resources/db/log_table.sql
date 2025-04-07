@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS log_record
     correlation_id VARCHAR(255) NOT NULL,
     level          VARCHAR(50)  NOT NULL,
     method         VARCHAR(255) NOT NULL,
-    timestamp      TIMESTAMP    NOT NULL
+    time_stamp      TIMESTAMP    NOT NULL
 );

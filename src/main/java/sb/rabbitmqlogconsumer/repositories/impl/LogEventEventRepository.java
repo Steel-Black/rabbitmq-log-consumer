@@ -1,14 +1,15 @@
-package sb.rabbitmqlogconsumer.repositories;
+package sb.rabbitmqlogconsumer.repositories.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import sb.rabbitmqlogconsumer.dto.LogRecordEvent;
+import sb.rabbitmqlogconsumer.repositories.EventRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class LogEventEventRepository implements EventRepository<LogRecordEvent> {
@@ -38,13 +39,6 @@ public class LogEventEventRepository implements EventRepository<LogRecordEvent> 
                 return logRecordEvent.getRecords().size();
             }
         });
-
-    }
-
-    @Override
-    public void saveAll(List<LogRecordEvent> list) {
-        String sql = "INSERT INTO %s (level, message, timestamp, source) VALUES (?, ?, ?, ?)";
-
 
     }
 }

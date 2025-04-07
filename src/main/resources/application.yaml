@@ -5,12 +5,12 @@ spring:
     username: steelblack
     password: 529220GT
     listener:
-      type: direct # Тип слушателя
+      type: simple # Тип слушателя
       simple:
         concurrency: 5 # Минимальное количество потребителей (consumer threads)
         max-concurrency: 10 # Максимальное количество потребителей
         prefetch: 50 # Количество сообщений, которое может быть обработано одним потребителем за раз
-        acknowledge-mode: manual # Ручное подтверждение обработки сообщений
+        acknowledge-mode: auto # Ручное подтверждение обработки сообщений
         default-requeue-rejected: false # Не возвращать сообщения в очередь при ошибках
         retry:
           enabled: true # Включить механизм повторных попыток
@@ -18,16 +18,17 @@ spring:
           initial-interval: 10000 # Начальный интервал между попытками (в миллисекундах)
           multiplier: 10.0 # Множитель для увеличения интервала между попытками
           max-interval: 100000 # Максимальный интервал между попытками
-      direct:
-        consumers-per-queue: 1 # Количество потребителей на одну очередь.
-        prefetch: 100 # Количество сообщений, которое может быть обработано одним потребителем за ра
-        default-requeue-rejected: false # Не возвращать сообщения в очередь при ошибках
-        retry:
-          enabled: true # Включить механизм повторных попыток
-          max-attempts: 3 # Максимальное количество попыток обработки
-          initial-interval: 1000 # Начальный интервал между попытками (в миллисекундах)
-          multiplier: 10.0 # Множитель для увеличения интервала между попытками
-          max-interval: 10000 # Максимальный интервал между попытками
+#      direct:
+#        acknowledge-mode: auto # Ручное подтверждение обработки сообщений
+#        consumers-per-queue: 1 # Количество потребителей на одну очередь.
+#        prefetch: 100 # Количество сообщений, которое может быть обработано одним потребителем за ра
+#        default-requeue-rejected: false # Не возвращать сообщения в очередь при ошибках
+#        retry:
+#          enabled: true # Включить механизм повторных попыток
+#          max-attempts: 3 # Максимальное количество попыток обработки
+#          initial-interval: 1000 # Начальный интервал между попытками (в миллисекундах)
+#          multiplier: 10.0 # Множитель для увеличения интервала между попытками
+#          max-interval: 10000 # Максимальный интервал между попытками
 #          stateless: false
     queues:
       log-queue:
@@ -48,8 +49,7 @@ spring:
     username: postgres
     password: 529220GT
     driver-class-name: org.postgresql.Driver
-  main:
-    lazy-initialization: false
   sql:
     init:
-      schema-locations: classpath:log_table.sql
+      schema-locations: classpath:db/*
+      mode: always

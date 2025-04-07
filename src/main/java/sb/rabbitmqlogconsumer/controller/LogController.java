@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sb.rabbitmqlogconsumer.dto.LogRecordEvent;
-import sb.rabbitmqlogconsumer.produser.MessageProducer;
+import sb.rabbitmqlogconsumer.queue.produser.MessageProducer;
 
 @RestController
 @RequestMapping("/log")
